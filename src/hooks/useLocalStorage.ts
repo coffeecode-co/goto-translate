@@ -1,4 +1,4 @@
-interface Props {
+export interface UseLocalStorageProps {
   op: "set" | "get" | "remove" | "clear";
   key?: string;
   data?: string;
@@ -12,7 +12,7 @@ export const useLocalStorage = () => {
   return [operateChromeStorage];
 };
 
-const operateLocalStorage = (props: Props) => {
+const operateLocalStorage = (props: UseLocalStorageProps) => {
   const { op, key, data } = props;
 
   switch (op) {
@@ -35,7 +35,7 @@ const operateLocalStorage = (props: Props) => {
   }
 };
 
-const operateChromeStorage = async (props: Props) => {
+const operateChromeStorage = async (props: UseLocalStorageProps) => {
   const { op, key, data } = props;
   switch (op) {
     case "get":
