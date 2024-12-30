@@ -1,1 +1,1 @@
-window.alert("verga");
+console.log("verga");

@@ -1,14 +1,14 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
-import App from "./App.tsx";
+import { PopUp } from "./presentation/components/";
 
 const root = document.createElement("div");
-root.id = "goto-roott";
+root.id = "crx-root";
 document.body.appendChild(root);
 
 createRoot(root).render(
   <StrictMode>
-    <App />
+    <PopUp />
   </StrictMode>
 );
