@@ -24,7 +24,7 @@ export const PopUp = () => {
   ];
 
   return (
-    <div className="w-64 p-4 space-y-4 bg-white">
+    <div className="w-64 p-4 space-y-4 h-96 bg-white">
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-semibold">Traductor</h2>
         <EnableSwitch />
