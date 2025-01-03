@@ -1,14 +1,13 @@
 import { Toaster } from "@/components/ui/toaster";
 import { toast } from "@/hooks/use-toast";
 import { useEffect, useState } from "react";
+import { TranslateService } from "@/services";
 
 export const TranslateToaster = () => {
   const [selectedText, setSelectedText] = useState("");
   useEffect(() => {
     const handleSelection = () => {
-      console.log(window.getSelection()?.toString().match(/\n/g)); // TODO: retirar
       const text = window.getSelection()?.toString();
-      console.log(text); // TODO: retirar
 
       if (text && text.length > 0) {
         setSelectedText(text);
@@ -23,11 +22,21 @@ export const TranslateToaster = () => {
   }, []);
 
   useEffect(() => {
+    const apiKey = import.meta.env.VITE_GOOGLE_CLOUD_TRANSLATE_KEY; // Replace with your Deepl API key
+
+    const translateService = new TranslateService({ api_key: apiKey });
+
     if (!selectedText) return;
-    toast({
-      title: selectedText,
-      duration: 15000,
-    });
+    (async () => {
+      const translatedText = await translateService.translate({
+        text: selectedText,
+        target: "en",
+      });
+      toast({
+        title: translatedText,
+        duration: 15000,
+      });
+    })();
   }, [selectedText]);
   return <Toaster />;
 };
