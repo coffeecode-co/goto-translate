@@ -1,3 +1,3 @@
-export type { UseLocalStorageProps } from "./useLocalStorage";
-
 export { useLocalStorage } from "./useLocalStorage";
+
+export type { UseLocalStorageProps } from "./useLocalStorage";
