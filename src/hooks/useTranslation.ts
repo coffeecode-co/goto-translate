@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { TranslateService } from "@/services";
+import { envs } from "@/config";
 
 interface UseTranslationProps {
   text: string;
@@ -19,7 +20,13 @@ export const useTranslation = ({ text, targetLang }: UseTranslationProps) => {
         setIsLoading(true);
         setError(null);
 
-        const apiKey = import.meta.env.VITE_GOOGLE_CLOUD_TRANSLATE_KEY;
+        const isTranslationEnabled = envs.VITE_TRANSLATION_ENABLED;
+        if (!isTranslationEnabled) {
+          setTranslation(text);
+          return;
+        }
+
+        const apiKey = envs.VITE_GOOGLE_CLOUD_TRANSLATE_KEY;
         if (!apiKey) {
           throw new Error("Translation API key is not configured");
         }
