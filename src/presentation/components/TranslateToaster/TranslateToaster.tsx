@@ -1,42 +1,40 @@
+import { useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { toast } from "@/hooks/use-toast";
-import { useEffect, useState } from "react";
-import { TranslateService } from "@/services";
+import { useTextSelection } from "@/hooks/useTextSelection";
+import { useTranslation } from "@/hooks/useTranslation";
 
-export const TranslateToaster = () => {
-  const [selectedText, setSelectedText] = useState("");
-  useEffect(() => {
-    const handleSelection = () => {
-      const text = window.getSelection()?.toString();
+interface TranslateToasterProps {
+  targetLanguage?: string;
+}
 
-      if (text && text.length > 0) {
-        setSelectedText(text);
-      }
-    };
-
-    document.addEventListener("mouseup", handleSelection);
-
-    return () => {
-      document.removeEventListener("mouseup", handleSelection);
-    };
-  }, []);
+export const TranslateToaster = ({
+  targetLanguage = "en",
+}: TranslateToasterProps) => {
+  const selectedText = useTextSelection();
+  const { translation, error } = useTranslation({
+    text: selectedText,
+    targetLang: targetLanguage,
+  });
 
   useEffect(() => {
-    const apiKey = import.meta.env.VITE_GOOGLE_CLOUD_TRANSLATE_KEY; // Replace with your Deepl API key
-
-    const translateService = new TranslateService({ api_key: apiKey });
-
-    if (!selectedText) return;
-    (async () => {
-      const translatedText = await translateService.translate({
-        text: selectedText,
-        target: "en",
-      });
+    if (error) {
       toast({
-        title: translatedText,
+        title: "Translation Error",
+        description: error.message,
+        variant: "destructive",
+        duration: 5000,
+      });
+      return;
+    }
+
+    if (translation) {
+      toast({
+        title: translation,
         duration: 15000,
       });
-    })();
-  }, [selectedText]);
+    }
+  }, [translation, error]);
+
   return <Toaster />;
 };

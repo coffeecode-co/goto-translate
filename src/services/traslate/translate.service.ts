@@ -38,5 +38,6 @@ export class TranslateService {
     } catch (error) {
       console.log(error);
     }
+    return "";
   }
 }
