@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { toast } from "@/hooks/use-toast";
 import { useTextSelection } from "@/hooks/useTextSelection";
 import { useTranslation } from "@/hooks/useTranslation";
-import { useLocalStorage } from "@/hooks";
+import { useLocalStorage, useTranslateStore } from "@/hooks";
 import { GotoTranslateData } from "..";
 
 interface TranslateToasterProps {
@@ -15,8 +15,10 @@ const STORAGE_KEY = "gotoTranslateActive";
 export const TranslateToaster = ({
   targetLanguage = "en",
 }: TranslateToasterProps) => {
-  const selectedText = useTextSelection();
-  const { translation, error } = useTranslation({
+  useTextSelection();
+  const selectedText = useTranslateStore((state) => state.selectedText);
+  const translatedText = useTranslateStore((state) => state.translatedText);
+  const { error } = useTranslation({
     text: selectedText,
     targetLang: targetLanguage,
   });
@@ -46,15 +48,13 @@ export const TranslateToaster = ({
         return;
       }
 
-      if (translation) {
-        toast({
-          title: translation,
-          duration: 15000,
-        });
-      }
+      toast({
+        title: translatedText,
+        duration: translatedText ? 15000 : 1,
+      });
     };
     translateText();
-  }, [translation, error, getStorageValue]);
+  }, [translatedText, error, getStorageValue, selectedText]);
 
   return <Toaster />;
 };

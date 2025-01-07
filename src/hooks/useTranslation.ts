@@ -2,27 +2,29 @@ import { useState, useEffect } from "react";
 import { TranslateService } from "@/services";
 import { envs } from "@/config";
 
+import { useTranslateStore } from "./useStore";
+
 interface UseTranslationProps {
   text: string;
   targetLang: string;
 }
 
 export const useTranslation = ({ text, targetLang }: UseTranslationProps) => {
-  const [translation, setTranslation] = useState("");
+  const setTanslatedText = useTranslateStore(
+    (state) => state.setTranslatedText
+  );
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
     const translateText = async () => {
-      if (!text) return;
-
       try {
         setIsLoading(true);
         setError(null);
 
         const isTranslationEnabled = envs.VITE_TRANSLATION_ENABLED;
         if (!isTranslationEnabled) {
-          setTranslation(text);
+          setTanslatedText(text);
           return;
         }
 
@@ -37,7 +39,7 @@ export const useTranslation = ({ text, targetLang }: UseTranslationProps) => {
           target: targetLang,
         });
 
-        setTranslation(translatedText);
+        setTanslatedText(translatedText);
       } catch (err) {
         setError(err instanceof Error ? err : new Error("Translation failed"));
       } finally {
@@ -46,7 +48,7 @@ export const useTranslation = ({ text, targetLang }: UseTranslationProps) => {
     };
 
     translateText();
-  }, [text, targetLang]);
+  }, [text, targetLang, setTanslatedText]);
 
-  return { translation, isLoading, error };
+  return { isLoading, error };
 };
