@@ -12,7 +12,8 @@ export const useTextSelection = () => {
       setSelectedText(text ?? "");
     };
 
-    document.addEventListener("mouseup", handleSelection);
-    return () => document.removeEventListener("mouseup", handleSelection);
+    document.addEventListener("selectionchange", handleSelection);
+    return () =>
+      document.removeEventListener("selectionchange", handleSelection);
   }, [setSelectedText]);
 };
