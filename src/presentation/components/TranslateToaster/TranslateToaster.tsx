@@ -28,7 +28,7 @@ export const TranslateToaster = ({
 }: TranslateToasterProps) => {
   const [selectEvent] = useTextSelection();
   const { selectedText, translatedText } = useTranslateStore();
-  const { error } = useTranslation({
+  const { error: errorTranslate } = useTranslation({
     text: selectedText,
     targetLang: targetLanguage,
   });
@@ -47,20 +47,19 @@ export const TranslateToaster = ({
 
   const showTranslationToast = useCallback(
     (text: string, isError = false) => {
-      const noErrorDuration = text ? DEFAULT_TOAST_DURATION : 1;
-      toast({
+      const theToast = toast({
         title: isError ? "Translation Error" : text,
-        description: isError ? error?.message : undefined,
+        description: isError ? errorTranslate?.message : undefined,
         variant: isError ? "destructive" : undefined,
-        duration: isError ? ERROR_TOAST_DURATION : noErrorDuration,
+        duration: isError ? ERROR_TOAST_DURATION : DEFAULT_TOAST_DURATION,
       });
+      if (!text) theToast.dismiss();
     },
-    [error?.message]
+    [errorTranslate?.message]
   );
 
   useHotkeyBind([
     {
-      key: "a",
       modifiers: ["shiftKey"],
       action: () => {
         handleHotkey({
@@ -74,36 +73,28 @@ export const TranslateToaster = ({
 
   useEffect(() => {
     const translateText = async () => {
-      const eventTarget = selectEvent.target as HTMLInputElement;
-
       try {
         const gotoIsActive = await getStorageValue();
         if (gotoIsActive !== "true") return;
 
-        if (error) {
+        if (errorTranslate) {
           showTranslationToast("", true);
           return;
         }
 
-        if (!isEditableElement(eventTarget)) {
-          showTranslationToast(translatedText);
-        }
+        showTranslationToast(translatedText);
       } catch (error) {
         console.warn("Error in translation process:", error);
       }
     };
 
-    if ((translatedText !== null && translatedText !== undefined) || error) {
+    if (
+      (translatedText !== null && translatedText !== undefined) ||
+      errorTranslate
+    ) {
       translateText();
     }
-  }, [
-    translatedText,
-    error,
-    getStorageValue,
-    selectedText,
-    selectEvent,
-    showTranslationToast,
-  ]);
+  }, [translatedText, errorTranslate, getStorageValue, showTranslationToast]);
 
   return <Toaster />;
 };
