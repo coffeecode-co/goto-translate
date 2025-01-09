@@ -1,0 +1,1 @@
+export { isEditableElement } from "./isTextElement";
