@@ -23,7 +23,7 @@ export const useTranslation = ({ text, targetLang }: UseTranslationProps) => {
         setError(null);
 
         const isTranslationEnabled = envs.VITE_TRANSLATION_ENABLED;
-        if (!isTranslationEnabled) {
+        if (!isTranslationEnabled || !text) {
           setTanslatedText(text);
           return;
         }
