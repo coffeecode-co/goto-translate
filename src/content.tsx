@@ -1,6 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import "./index.css";
+import "./index_context.css";
 import { TranslateToaster } from "./presentation/components";
 
 const root = document.createElement("div");

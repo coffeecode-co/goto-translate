@@ -47,11 +47,12 @@ export const TranslateToaster = ({
 
   const showTranslationToast = useCallback(
     (text: string, isError = false) => {
+      const noErrorDuration = text ? DEFAULT_TOAST_DURATION : 1;
       toast({
         title: isError ? "Translation Error" : text,
         description: isError ? error?.message : undefined,
         variant: isError ? "destructive" : undefined,
-        duration: isError ? ERROR_TOAST_DURATION : DEFAULT_TOAST_DURATION,
+        duration: isError ? ERROR_TOAST_DURATION : noErrorDuration,
       });
     },
     [error?.message]
@@ -90,7 +91,7 @@ export const TranslateToaster = ({
       }
     };
 
-    if (translatedText || error) {
+    if ((translatedText !== null && translatedText !== undefined) || error) {
       translateText();
     }
   }, [
