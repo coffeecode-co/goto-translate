@@ -5,8 +5,8 @@ type ModifierKey = "ctrlKey" | "shiftKey" | "altKey" | "metaKey";
 
 // Interface for hotkey configuration
 interface HotkeyConfig {
-  key: string;
   action: () => void;
+  key?: string;
   modifiers?: ModifierKey[];
 }
 
@@ -46,7 +46,9 @@ export const useHotkeyBind = (configs: HotkeyConfigs) => {
     (event: KeyboardEvent) => {
       configs.forEach(({ key, modifiers, action }) => {
         if (
-          event.key.toLowerCase() === key.toLowerCase() &&
+          (key &&
+            event.key.toLowerCase() === key.toLowerCase() &&
+            checkModifiers(event, modifiers)) ||
           checkModifiers(event, modifiers)
         ) {
           event.preventDefault();

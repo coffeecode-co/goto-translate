@@ -61,12 +61,14 @@ export const TranslateToaster = ({
   useHotkeyBind([
     {
       key: "a",
-      modifiers: ["ctrlKey", "shiftKey"],
-      action: () =>
+      modifiers: ["shiftKey"],
+      action: () => {
         handleHotkey({
           eventTarget: selectEvent.target as HTMLInputElement,
           isEditableElement,
-        }),
+          text: translatedText,
+        });
+      },
     },
   ]);
 
@@ -87,7 +89,7 @@ export const TranslateToaster = ({
           showTranslationToast(translatedText);
         }
       } catch (error) {
-        console.error("Error in translation process:", error);
+        console.warn("Error in translation process:", error);
       }
     };
 
