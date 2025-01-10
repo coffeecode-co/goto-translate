@@ -8,7 +8,7 @@ import {
   useTextSelection,
   useHotkeyBind,
 } from "@/hooks";
-import { isEditableElement } from "@/config/utils";
+import { getEditableElements } from "@/config/utils";
 import { GLOBAL_STRINGS } from "@/config";
 
 import { handleHotkey } from "./TranslateToaster.controller";
@@ -26,10 +26,12 @@ const ERROR_TOAST_DURATION = 5000;
 export const TranslateToaster = ({
   targetLanguage = "en",
 }: TranslateToasterProps) => {
+  const textFromKeyBoardSelection =
+    window.getSelection()?.toString().trim() ?? "";
   const [selectEvent] = useTextSelection();
   const { selectedText, translatedText } = useTranslateStore();
   const { error: errorTranslate } = useTranslation({
-    text: selectedText,
+    text: selectedText || textFromKeyBoardSelection,
     targetLang: targetLanguage,
   });
   const [customStorage] = useLocalStorage();
@@ -64,7 +66,7 @@ export const TranslateToaster = ({
       action: () => {
         handleHotkey({
           eventTarget: selectEvent.target as HTMLInputElement,
-          isEditableElement,
+          getEditableElements,
           text: translatedText,
         });
       },

@@ -1,18 +1,21 @@
 interface HandleHotkeyProps {
   eventTarget: HTMLInputElement;
-  isEditableElement: (element: HTMLElement) => boolean;
+  getEditableElements: (
+    element: HTMLInputElement
+  ) => HTMLInputElement | undefined;
   text: string;
 }
 
 export const handleHotkey = async ({
   eventTarget,
-  isEditableElement,
+  getEditableElements,
   text,
 }: HandleHotkeyProps) => {
   try {
-    if (!isEditableElement(eventTarget)) return;
+    const element = getEditableElements(eventTarget);
+    if (!element) return;
     if (!text) return;
-    eventTarget.value = text;
+    element.value = text;
   } catch (error) {
     console.error("Error handling hotkey:", error);
   }
