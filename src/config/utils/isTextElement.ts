@@ -1,13 +1,9 @@
-const elements: string[] = ["input", "textarea"];
-
 export const isEditableElement = (element: HTMLElement): boolean => {
-  try {
-    const nodeName = element.nodeName.toLowerCase();
-    return elements.includes(nodeName);
-  } catch (error) {
-    console.error("Error in isEditableElement:", error);
-    return false;
-  }
+  return (
+    element instanceof HTMLInputElement ||
+    element instanceof HTMLTextAreaElement ||
+    element.isContentEditable
+  );
 };
 
 export const getEditableElements = (
