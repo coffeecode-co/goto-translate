@@ -32,7 +32,25 @@ export const PopUp = () => {
 
       <div className="space-y-2">
         <label htmlFor="#" className="text-sm font-medium">
-          Traducir a:
+          Native Language:
+        </label>
+        <Select value={selectedLanguage} onValueChange={setSelectedLanguage}>
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Selecciona un idioma" />
+          </SelectTrigger>
+          <SelectContent>
+            {languages.map((lang) => (
+              <SelectItem key={lang.value} value={lang.value}>
+                {lang.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
+      <div className="space-y-2">
+        <label htmlFor="#" className="text-sm font-medium">
+          Translate to:
         </label>
         <Select value={selectedLanguage} onValueChange={setSelectedLanguage}>
           <SelectTrigger className="w-full">
