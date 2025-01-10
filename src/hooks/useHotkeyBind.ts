@@ -44,13 +44,14 @@ export const useHotkeyBind = (configs: HotkeyConfigs) => {
 
   // Keydown event handler
   const handleKeyDown = useCallback(
-    (event: KeyboardEvent) => {
+    (e: Event) => {
+      const event = e as KeyboardEvent;
       configs.forEach(({ key, modifiers, action, preventDefault = false }) => {
         if (
           (key &&
             event.key.toLowerCase() === key.toLowerCase() &&
             checkModifiers(event, modifiers)) ||
-          checkModifiers(event, modifiers)
+          (!key && checkModifiers(event, modifiers))
         ) {
           if (preventDefault) event.preventDefault();
           action();
@@ -62,9 +63,11 @@ export const useHotkeyBind = (configs: HotkeyConfigs) => {
 
   // Effect to add and remove the event listener
   useEffect(() => {
-    window.addEventListener("keydown", handleKeyDown);
+    const element = document.activeElement ?? document;
+
+    element.addEventListener("keydown", handleKeyDown);
     return () => {
-      window.removeEventListener("keydown", handleKeyDown);
+      element.removeEventListener("keydown", handleKeyDown);
     };
   }, [handleKeyDown]);
 };
