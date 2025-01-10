@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { TranslateService } from "@/services";
-import { envs } from "@/config";
+import { decode, envs } from "@/config";
 
 import { useTranslateStore } from "./useStore";
 
@@ -24,7 +24,8 @@ export const useTranslation = ({ text, targetLang }: UseTranslationProps) => {
 
         const isTranslationEnabled = envs.VITE_TRANSLATION_ENABLED;
         if (!isTranslationEnabled || !text) {
-          setTanslatedText(text ? `[ ${text} ]` : "");
+          const decodedText = decode(text);
+          setTanslatedText(decodedText ? `[ ${decodedText} ]` : "");
           return;
         }
 
@@ -39,7 +40,8 @@ export const useTranslation = ({ text, targetLang }: UseTranslationProps) => {
           target: targetLang,
         });
 
-        setTanslatedText(translatedText);
+        const decodedText = decode(translatedText);
+        setTanslatedText(decodedText);
       } catch (err) {
         setError(err instanceof Error ? err : new Error("Translation failed"));
       } finally {
