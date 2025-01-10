@@ -24,7 +24,7 @@ export const useTranslation = ({ text, targetLang }: UseTranslationProps) => {
 
         const isTranslationEnabled = envs.VITE_TRANSLATION_ENABLED;
         if (!isTranslationEnabled || !text) {
-          setTanslatedText(text);
+          setTanslatedText(text ? `[ ${text} ]` : "");
           return;
         }
 
