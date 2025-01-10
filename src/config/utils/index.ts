@@ -1,1 +1,1 @@
-export { isEditableElement } from "./isTextElement";
+export { isEditableElement, getEditableElements } from "./isTextElement";
