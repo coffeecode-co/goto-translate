@@ -15,7 +15,7 @@ export const handleHotkey = async ({
     const element = getEditableElements(eventTarget);
     if (!element) return;
     if (!text) return;
-    element.value = text;
+    document.execCommand("insertText", false, text);
   } catch (error) {
     console.error("Error handling hotkey:", error);
   }
