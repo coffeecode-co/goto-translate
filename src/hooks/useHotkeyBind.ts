@@ -8,6 +8,7 @@ interface HotkeyConfig {
   action: () => void;
   key?: string;
   modifiers?: ModifierKey[];
+  preventDefault?: boolean;
 }
 
 // Type for multiple hotkey configurations
@@ -44,14 +45,14 @@ export const useHotkeyBind = (configs: HotkeyConfigs) => {
   // Keydown event handler
   const handleKeyDown = useCallback(
     (event: KeyboardEvent) => {
-      configs.forEach(({ key, modifiers, action }) => {
+      configs.forEach(({ key, modifiers, action, preventDefault = false }) => {
         if (
           (key &&
             event.key.toLowerCase() === key.toLowerCase() &&
             checkModifiers(event, modifiers)) ||
           checkModifiers(event, modifiers)
         ) {
-          event.preventDefault();
+          if (preventDefault) event.preventDefault();
           action();
         }
       });
