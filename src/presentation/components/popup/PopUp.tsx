@@ -1,28 +1,12 @@
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+
 import { Heart } from "lucide-react";
 
 import { EnableSwitch } from "..";
+import { PopUpLenguagePicker } from "./PopUpLenguagePicker";
+import { GLOBAL_STRINGS } from "@/config";
 
 export const PopUp = () => {
-  const [selectedLanguage, setSelectedLanguage] = useState("es");
-
-  const languages = [
-    { value: "es", label: "Español" },
-    { value: "en", label: "English" },
-    { value: "fr", label: "Français" },
-    { value: "de", label: "Deutsch" },
-    { value: "it", label: "Italiano" },
-    { value: "pt", label: "Português" },
-  ];
-
   return (
     <div className="w-64 p-4 space-y-4 h-96 bg-white">
       <div className="flex items-center justify-between">
@@ -30,41 +14,21 @@ export const PopUp = () => {
         <EnableSwitch />
       </div>
 
-      <div className="space-y-2">
-        <label htmlFor="#" className="text-sm font-medium">
-          Native Language:
-        </label>
-        <Select value={selectedLanguage} onValueChange={setSelectedLanguage}>
-          <SelectTrigger className="w-full">
-            <SelectValue placeholder="Selecciona un idioma" />
-          </SelectTrigger>
-          <SelectContent>
-            {languages.map((lang) => (
-              <SelectItem key={lang.value} value={lang.value}>
-                {lang.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
+      <PopUpLenguagePicker
+        labelText={GLOBAL_STRINGS.POPUP_PICKERS.NATIVE_LANGUAGE.LABEL}
+        localStorageKey={GLOBAL_STRINGS.LOCAL_STORAGE_KEY.NATIVE_LENGUAGE}
+        selectPlaceholder={
+          GLOBAL_STRINGS.POPUP_PICKERS.NATIVE_LANGUAGE.PLACEHOLDER
+        }
+      />
 
-      <div className="space-y-2">
-        <label htmlFor="#" className="text-sm font-medium">
-          Translate to:
-        </label>
-        <Select value={selectedLanguage} onValueChange={setSelectedLanguage}>
-          <SelectTrigger className="w-full">
-            <SelectValue placeholder="Selecciona un idioma" />
-          </SelectTrigger>
-          <SelectContent>
-            {languages.map((lang) => (
-              <SelectItem key={lang.value} value={lang.value}>
-                {lang.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
+      <PopUpLenguagePicker
+        labelText={GLOBAL_STRINGS.POPUP_PICKERS.TARGET_LANGUAGE.LABEL}
+        localStorageKey={GLOBAL_STRINGS.LOCAL_STORAGE_KEY.TARGET_LENGUAGE}
+        selectPlaceholder={
+          GLOBAL_STRINGS.POPUP_PICKERS.TARGET_LANGUAGE.PLACEHOLDER
+        }
+      />
 
       <Button
         variant="outline"
