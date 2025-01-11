@@ -59,7 +59,7 @@ export const EnableSwitch = () => {
   }, [initializeSwitch]);
 
   if (!isInitialized) {
-    return null; // O un componente de loading si lo prefieres
+    return null;
   }
 
   return (
