@@ -23,7 +23,7 @@ export const useTranslation = ({
       key: targetLangKey,
     })) as GotoTranslateData;
 
-    return data?.gotoTranslateActive || data;
+    return data?.gotoTargetLanguage || data;
   }, [customStorage, targetLangKey]);
   const nativeLang = useCallback(async (): Promise<
     string | GotoTranslateData

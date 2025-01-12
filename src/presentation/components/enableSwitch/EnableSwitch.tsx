@@ -6,6 +6,8 @@ import type { UseLocalStorageProps } from "@/hooks";
 
 export interface GotoTranslateData {
   gotoTranslateActive: string;
+  gotoTargetLanguage: string;
+  gotoNativeLanguage: string;
 }
 
 const STORAGE_KEY = "gotoTranslateActive";
