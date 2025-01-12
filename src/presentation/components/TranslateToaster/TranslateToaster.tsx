@@ -15,24 +15,19 @@ import { handleHotkey } from "./TranslateToaster.controller";
 
 import type { GotoTranslateData } from "..";
 
-interface TranslateToasterProps {
-  targetLanguage?: string;
-}
-
 const { TRANSLATE_ACTIVE } = GLOBAL_STRINGS.LOCAL_STORAGE_KEY;
 const DEFAULT_TOAST_DURATION = 15000;
 const ERROR_TOAST_DURATION = 5000;
 
-export const TranslateToaster = ({
-  targetLanguage = "en",
-}: TranslateToasterProps) => {
+export const TranslateToaster = () => {
   const textFromKeyBoardSelection =
     window.getSelection()?.toString().trim() ?? "";
   const [selectEvent] = useTextSelection();
   const { selectedText, translatedText } = useTranslateStore();
   const { error: errorTranslate } = useTranslation({
     text: selectedText || textFromKeyBoardSelection,
-    targetLang: targetLanguage,
+    targetLangKey: GLOBAL_STRINGS.LOCAL_STORAGE_KEY.NATIVE_LENGUAGE,
+    nativeLangKey: GLOBAL_STRINGS.LOCAL_STORAGE_KEY.NATIVE_LENGUAGE,
   });
   const [customStorage] = useLocalStorage();
 

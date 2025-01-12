@@ -1,15 +1,42 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { TranslateService } from "@/services";
 import { decode, envs } from "@/config";
 
-import { useTranslateStore } from "./useStore";
+import { GotoTranslateData } from "@/presentation/components";
+import { useLocalStorage, useTranslateStore } from ".";
 
 interface UseTranslationProps {
   text: string;
-  targetLang: string;
+  nativeLangKey: string;
+  targetLangKey: string;
 }
 
-export const useTranslation = ({ text, targetLang }: UseTranslationProps) => {
+export const useTranslation = ({
+  text,
+  targetLangKey,
+  nativeLangKey,
+}: UseTranslationProps) => {
+  const [customStorage] = useLocalStorage();
+  const targetLang = useCallback(async (): Promise<
+    string | GotoTranslateData
+  > => {
+    const data = (await customStorage({
+      op: "get",
+      key: targetLangKey,
+    })) as GotoTranslateData;
+
+    return data?.gotoTranslateActive || data;
+  }, [customStorage, targetLangKey]);
+  const nativeLang = useCallback(async (): Promise<
+    string | GotoTranslateData
+  > => {
+    const data = (await customStorage({
+      op: "get",
+      key: nativeLangKey,
+    })) as GotoTranslateData;
+
+    return data?.gotoTranslateActive || data;
+  }, [customStorage, nativeLangKey]);
   const setTanslatedText = useTranslateStore(
     (state) => state.setTranslatedText
   );
@@ -34,10 +61,14 @@ export const useTranslation = ({ text, targetLang }: UseTranslationProps) => {
           throw new Error("Translation API key is not configured");
         }
 
+        const target = (await targetLang()) as string;
+        const native = (await nativeLang()) as string;
         const translateService = new TranslateService({ api_key: apiKey });
+        const thisTextLang = await translateService.detectLang({ text });
+        const targetForThis = thisTextLang === native ? target : native;
         const translatedText = await translateService.translate({
           text,
-          target: targetLang,
+          target: targetForThis,
         });
 
         const decodedText = decode(translatedText);
@@ -50,7 +81,7 @@ export const useTranslation = ({ text, targetLang }: UseTranslationProps) => {
     };
 
     translateText();
-  }, [text, targetLang, setTanslatedText]);
+  }, [text, targetLang, nativeLang, setTanslatedText]);
 
   return { isLoading, error };
 };

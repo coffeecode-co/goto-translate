@@ -1,12 +1,8 @@
-interface Translate {
-  text: string;
-  target: string;
-  source?: string;
-}
-
-interface TranslateServiceProps {
-  api_key: string;
-}
+import type {
+  Translate,
+  TranslateServiceProps,
+  DetectLangProps,
+} from "./translate.interfaces";
 
 export class TranslateService {
   api_key: string;
@@ -34,6 +30,28 @@ export class TranslateService {
 
       console.log(jsonResponse);
 
+      return jsonResponse.data.translations[0].translatedText;
+    } catch (error) {
+      console.log(error);
+    }
+    return "";
+  }
+
+  async detectLang({ text }: DetectLangProps): Promise<string> {
+    try {
+      const urlServerDetectLang = `https://translation.googleapis.com/language/translate/v2/detect?key=${this.api_key}`;
+      const response = await fetch(urlServerDetectLang, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          q: text,
+        }),
+      });
+      const jsonResponse = await response.json();
+
+      console.log(jsonResponse);
       return jsonResponse.data.translations[0].translatedText;
     } catch (error) {
       console.log(error);
