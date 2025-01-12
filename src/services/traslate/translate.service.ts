@@ -30,7 +30,7 @@ export class TranslateService {
 
       console.log(jsonResponse);
 
-      return jsonResponse.data.translations[0].translatedText;
+      return jsonResponse.data.translations.at(0).translatedText;
     } catch (error) {
       console.log(error);
     }
@@ -52,7 +52,7 @@ export class TranslateService {
       const jsonResponse = await response.json();
 
       console.log(jsonResponse);
-      return jsonResponse.data.translations[0].translatedText;
+      return jsonResponse.data.detections.at(0).at(0).language;
     } catch (error) {
       console.log(error);
     }

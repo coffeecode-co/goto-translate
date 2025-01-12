@@ -6,13 +6,11 @@ import { GotoTranslateData } from "@/presentation/components";
 import { useLocalStorage, useTranslateStore } from ".";
 
 interface UseTranslationProps {
-  text: string;
   nativeLangKey: string;
   targetLangKey: string;
 }
 
 export const useTranslation = ({
-  text,
   targetLangKey,
   nativeLangKey,
 }: UseTranslationProps) => {
@@ -37,11 +35,11 @@ export const useTranslation = ({
 
     return data?.gotoTranslateActive || data;
   }, [customStorage, nativeLangKey]);
-  const setTanslatedText = useTranslateStore(
-    (state) => state.setTranslatedText
-  );
+  const { setTranslatedText, selectedText } = useTranslateStore();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
+
+  const text = selectedText;
 
   useEffect(() => {
     const translateText = async () => {
@@ -52,7 +50,7 @@ export const useTranslation = ({
         const isTranslationEnabled = envs.VITE_TRANSLATION_ENABLED;
         if (!isTranslationEnabled || !text) {
           const decodedText = decode(text);
-          setTanslatedText(decodedText ? `[ ${decodedText} ]` : "");
+          setTranslatedText(decodedText ? `[ ${decodedText} ]` : "");
           return;
         }
 
@@ -72,7 +70,7 @@ export const useTranslation = ({
         });
 
         const decodedText = decode(translatedText);
-        setTanslatedText(decodedText);
+        setTranslatedText(decodedText);
       } catch (err) {
         setError(err instanceof Error ? err : new Error("Translation failed"));
       } finally {
@@ -81,7 +79,7 @@ export const useTranslation = ({
     };
 
     translateText();
-  }, [text, targetLang, nativeLang, setTanslatedText]);
+  }, [text, targetLang, nativeLang, setTranslatedText]);
 
   return { isLoading, error };
 };

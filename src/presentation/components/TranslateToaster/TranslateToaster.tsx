@@ -20,14 +20,11 @@ const DEFAULT_TOAST_DURATION = 15000;
 const ERROR_TOAST_DURATION = 5000;
 
 export const TranslateToaster = () => {
-  const textFromKeyBoardSelection =
-    window.getSelection()?.toString().trim() ?? "";
   const [selectEvent] = useTextSelection();
-  const { selectedText, translatedText } = useTranslateStore();
+  const { translatedText } = useTranslateStore();
   const { error: errorTranslate } = useTranslation({
-    text: selectedText || textFromKeyBoardSelection,
     targetLangKey: GLOBAL_STRINGS.LOCAL_STORAGE_KEY.NATIVE_LENGUAGE,
-    nativeLangKey: GLOBAL_STRINGS.LOCAL_STORAGE_KEY.NATIVE_LENGUAGE,
+    nativeLangKey: GLOBAL_STRINGS.LOCAL_STORAGE_KEY.TARGET_LENGUAGE,
   });
   const [customStorage] = useLocalStorage();
 
