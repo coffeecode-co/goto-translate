@@ -5,7 +5,10 @@ import { useLocalStorage } from "@/hooks";
 import type { UseLocalStorageProps } from "@/hooks";
 
 export interface GotoTranslateData {
+  [key: string]: string;
   gotoTranslateActive: string;
+  gotoTargetLanguage: string;
+  gotoNativeLanguage: string;
 }
 
 const STORAGE_KEY = "gotoTranslateActive";
@@ -59,7 +62,7 @@ export const EnableSwitch = () => {
   }, [initializeSwitch]);
 
   if (!isInitialized) {
-    return null; // O un componente de loading si lo prefieres
+    return null;
   }
 
   return (

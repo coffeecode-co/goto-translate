@@ -1,19 +1,28 @@
 import { useEffect, useState } from "react";
 
+import { useTranslateStore } from "./";
+
 export const useTextSelection = () => {
-  const [selectedText, setSelectedText] = useState("");
+  const [selectEvent, setSelectEvent] = useState<Event>(new Event(""));
+
+  const setSelectedText = useTranslateStore((state) => state.setSelectedText);
 
   useEffect(() => {
-    const handleSelection = () => {
+    const handleMouseSelection = () => {
       const text = window.getSelection()?.toString().trim();
-      if (text) {
-        setSelectedText(text);
-      }
+
+      setSelectedText(text ?? "");
     };
 
-    document.addEventListener("mouseup", handleSelection);
-    return () => document.removeEventListener("mouseup", handleSelection);
-  }, []);
+    document.addEventListener("mouseup", handleMouseSelection);
+    return () => document.removeEventListener("mouseup", handleMouseSelection);
+  }, [setSelectedText]);
 
-  return selectedText;
+  useEffect(() => {
+    document.addEventListener("selectionchange", setSelectEvent);
+    return () =>
+      document.removeEventListener("selectionchange", setSelectEvent);
+  }, [setSelectEvent]);
+
+  return [selectEvent];
 };
