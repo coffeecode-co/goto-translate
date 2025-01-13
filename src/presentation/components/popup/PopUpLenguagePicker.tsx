@@ -42,7 +42,7 @@ export const PopUpLenguagePicker = ({
     const dataReturn = data as GotoTranslateData;
     const dataString = data as string;
 
-    return dataReturn.gotoTranslateActive || dataString;
+    return dataReturn[localStorageKey] || dataString;
   }, [customStorage, localStorageKey]);
 
   const setStorageValue = useCallback(
