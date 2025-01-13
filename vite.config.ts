@@ -16,6 +16,6 @@ export default defineConfig({
     port: 3000,
   },
   build: {
-    minify: false, // Desactiva la minificación
+    minify: true, // Desactiva la minificación
   },
 });
