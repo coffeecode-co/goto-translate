@@ -6,7 +6,6 @@ import { PopUp, TranslateToaster } from "./presentation/components/";
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <PopUp />
-    <input type="text" placeholder="acá" />
     <TranslateToaster />
   </StrictMode>
 );
