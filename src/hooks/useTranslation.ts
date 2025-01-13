@@ -23,7 +23,7 @@ export const useTranslation = ({
       key: targetLangKey,
     })) as GotoTranslateData;
 
-    return data?.gotoTargetLanguage || data;
+    return data[targetLangKey] || data;
   }, [customStorage, targetLangKey]);
   const nativeLang = useCallback(async (): Promise<
     string | GotoTranslateData
@@ -33,7 +33,7 @@ export const useTranslation = ({
       key: nativeLangKey,
     })) as GotoTranslateData;
 
-    return data?.gotoTranslateActive || data;
+    return data[nativeLangKey] || data;
   }, [customStorage, nativeLangKey]);
   const { setTranslatedText, selectedText } = useTranslateStore();
   const [isLoading, setIsLoading] = useState(false);

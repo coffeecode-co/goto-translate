@@ -5,6 +5,7 @@ import { useLocalStorage } from "@/hooks";
 import type { UseLocalStorageProps } from "@/hooks";
 
 export interface GotoTranslateData {
+  [key: string]: string;
   gotoTranslateActive: string;
   gotoTargetLanguage: string;
   gotoNativeLanguage: string;

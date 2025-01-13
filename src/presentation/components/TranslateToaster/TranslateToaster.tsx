@@ -23,8 +23,8 @@ export const TranslateToaster = () => {
   const [selectEvent] = useTextSelection();
   const { translatedText } = useTranslateStore();
   const { error: errorTranslate } = useTranslation({
-    targetLangKey: GLOBAL_STRINGS.LOCAL_STORAGE_KEY.NATIVE_LENGUAGE,
-    nativeLangKey: GLOBAL_STRINGS.LOCAL_STORAGE_KEY.TARGET_LENGUAGE,
+    nativeLangKey: GLOBAL_STRINGS.LOCAL_STORAGE_KEY.NATIVE_LENGUAGE,
+    targetLangKey: GLOBAL_STRINGS.LOCAL_STORAGE_KEY.TARGET_LENGUAGE,
   });
   const [customStorage] = useLocalStorage();
 
