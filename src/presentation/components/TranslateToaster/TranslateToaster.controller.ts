@@ -15,6 +15,7 @@ const showTranslationToast = (text: string) => {
   const theToast = toast({
     title: text,
     duration: DEFAULT_TOAST_DURATION,
+    className: "bg-white text-gray-800 text-sm rounded-md shadow-md",
   });
   if (!text) theToast.dismiss();
 };
