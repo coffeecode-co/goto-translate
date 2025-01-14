@@ -1,8 +1,7 @@
 import { useState, useCallback } from "react";
 import { TranslateService } from "@/services";
-import { decode, envs } from "@/config";
+import { decode, envs, GLOBAL_STRINGS } from "@/config";
 
-import { GotoTranslateData } from "@/presentation/components";
 import { useLocalStorage, useTranslateStore } from ".";
 
 interface UseTranslationProps {
@@ -15,25 +14,21 @@ export const useTranslation = ({
   nativeLangKey,
 }: UseTranslationProps) => {
   const [customStorage] = useLocalStorage();
-  const targetLang = useCallback(async (): Promise<
-    string | GotoTranslateData
-  > => {
-    const data = (await customStorage({
+  const targetLang = useCallback(async (): Promise<string> => {
+    const data = await customStorage({
       op: "get",
       key: targetLangKey,
-    })) as GotoTranslateData;
+    });
 
-    return data[targetLangKey] || data;
+    return data ?? GLOBAL_STRINGS.POPUP_PICKERS.TARGET_LANGUAGE.DEFAULT_VALUE;
   }, [customStorage, targetLangKey]);
-  const nativeLang = useCallback(async (): Promise<
-    string | GotoTranslateData
-  > => {
-    const data = (await customStorage({
+  const nativeLang = useCallback(async (): Promise<string> => {
+    const data = await customStorage({
       op: "get",
       key: nativeLangKey,
-    })) as GotoTranslateData;
+    });
 
-    return data[nativeLangKey] || data;
+    return data ?? GLOBAL_STRINGS.POPUP_PICKERS.NATIVE_LANGUAGE.DEFAULT_VALUE;
   }, [customStorage, nativeLangKey]);
   const { setTranslatedText, selectedText, translatedText } =
     useTranslateStore();
@@ -62,8 +57,8 @@ export const useTranslation = ({
 
       const textForTranslate =
         (text || window.getSelection()?.toString().trim()) ?? "";
-      const target = (await targetLang()) as string;
-      const native = (await nativeLang()) as string;
+      const target = await targetLang();
+      const native = await nativeLang();
       const translateService = new TranslateService({ api_key: apiKey });
       const thisTextLang = await translateService.detectLang({
         text: textForTranslate,
