@@ -7,10 +7,5 @@ createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <PopUp />
     <TranslateToaster />
-    <input
-      type="text"
-      placeholder="acá"
-      defaultValue="y la iguana tomaba cafe"
-    />
   </StrictMode>
 );
