@@ -37,10 +37,12 @@ const operateLocalStorage = (props: UseLocalStorageProps) => {
 
 const operateChromeStorage = async (props: UseLocalStorageProps) => {
   const { op, key, data } = props;
+  let localData: { [key: string]: string } = {};
   switch (op) {
     case "get":
       if (!key) return;
-      return await chrome.storage.local.get(key);
+      localData = await chrome.storage.local.get(key);
+      return localData[key];
     case "set":
       if (!key || !data) return;
       await chrome.storage.local.set({ [key]: data });
