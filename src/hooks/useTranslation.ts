@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { TranslateService } from "@/services";
 import { decode, envs } from "@/config";
 
@@ -35,55 +35,55 @@ export const useTranslation = ({
 
     return data[nativeLangKey] || data;
   }, [customStorage, nativeLangKey]);
-  const { setTranslatedText, selectedText } = useTranslateStore();
+  const { setTranslatedText, selectedText, translatedText } =
+    useTranslateStore();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
   const text = selectedText;
 
-  useEffect(() => {
-    const translateText = async () => {
-      try {
-        setIsLoading(true);
-        setError(null);
+  const translateText = async () => {
+    try {
+      setIsLoading(true);
+      setError(null);
 
-        const isTranslationEnabled = envs.VITE_TRANSLATION_ENABLED;
-        if (!isTranslationEnabled || !text) {
-          const decodedText = decode(text);
-          setTranslatedText(decodedText ? `[ ${decodedText} ]` : "");
-          return;
-        }
-
-        const apiKey = envs.VITE_GOOGLE_CLOUD_TRANSLATE_KEY;
-        if (!apiKey) {
-          throw new Error("Translation API key is not configured");
-        }
-
-        const textForTranslate =
-          (text || window.getSelection()?.toString().trim()) ?? "";
-        const target = (await targetLang()) as string;
-        const native = (await nativeLang()) as string;
-        const translateService = new TranslateService({ api_key: apiKey });
-        const thisTextLang = await translateService.detectLang({
-          text: textForTranslate,
-        });
-        const targetForThis = thisTextLang === native ? target : native;
-        const translatedText = await translateService.translate({
-          text: textForTranslate,
-          target: targetForThis,
-        });
-
-        const decodedText = decode(translatedText);
-        setTranslatedText(decodedText);
-      } catch (err) {
-        setError(err instanceof Error ? err : new Error("Translation failed"));
-      } finally {
-        setIsLoading(false);
+      const isTranslationEnabled = envs.VITE_TRANSLATION_ENABLED;
+      if (!isTranslationEnabled || !text) {
+        const decodedText = decode(text);
+        setTranslatedText(decodedText ? `[ ${decodedText} ]` : "");
+        return;
       }
-    };
 
-    translateText();
-  }, [text, targetLang, nativeLang, setTranslatedText]);
+      const apiKey = envs.VITE_GOOGLE_CLOUD_TRANSLATE_KEY;
+      if (!apiKey) {
+        throw new Error("Translation API key is not configured");
+      }
 
-  return { isLoading, error };
+      const textForTranslate =
+        (text || window.getSelection()?.toString().trim()) ?? "";
+      const target = (await targetLang()) as string;
+      const native = (await nativeLang()) as string;
+      const translateService = new TranslateService({ api_key: apiKey });
+      const thisTextLang = await translateService.detectLang({
+        text: textForTranslate,
+      });
+      const targetForThis = thisTextLang === native ? target : native;
+      const thisTranslatedText = await translateService.translate({
+        text: textForTranslate,
+        target: targetForThis,
+      });
+
+      const decodedText = decode(thisTranslatedText);
+      setTranslatedText(decodedText);
+      return decodedText;
+    } catch (err) {
+      setError(err instanceof Error ? err : new Error("Translation failed"));
+    } finally {
+      setIsLoading(false);
+    }
+
+    return translatedText;
+  };
+
+  return { isLoading, error, translateText };
 };

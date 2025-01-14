@@ -8,21 +8,17 @@ export const useTextSelection = () => {
   const setSelectedText = useTranslateStore((state) => state.setSelectedText);
 
   useEffect(() => {
-    const handleMouseSelection = () => {
+    const handleMouseSelection = (e: Event) => {
       const text = window.getSelection()?.toString().trim();
 
       setSelectedText(text ?? "");
+      setSelectEvent(e);
     };
 
-    document.addEventListener("mouseup", handleMouseSelection);
-    return () => document.removeEventListener("mouseup", handleMouseSelection);
-  }, [setSelectedText]);
-
-  useEffect(() => {
-    document.addEventListener("selectionchange", setSelectEvent);
+    document.addEventListener("selectionchange", handleMouseSelection);
     return () =>
-      document.removeEventListener("selectionchange", setSelectEvent);
-  }, [setSelectEvent]);
+      document.removeEventListener("selectionchange", handleMouseSelection);
+  }, [setSelectedText]);
 
   return [selectEvent];
 };

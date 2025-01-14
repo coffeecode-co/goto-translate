@@ -3,17 +3,18 @@ interface HandleHotkeyProps {
   getEditableElements: (
     element: HTMLInputElement
   ) => HTMLInputElement | undefined;
-  text: string;
+  doTranslate: () => Promise<string | undefined>;
 }
 
 export const handleHotkey = async ({
   eventTarget,
   getEditableElements,
-  text,
+  doTranslate,
 }: HandleHotkeyProps) => {
   try {
     const element = getEditableElements(eventTarget);
     const textSelected = document.getSelection()?.toString().trim();
+    const text = await doTranslate();
     if (!textSelected) return;
     if (!element) return;
     if (!text) return;

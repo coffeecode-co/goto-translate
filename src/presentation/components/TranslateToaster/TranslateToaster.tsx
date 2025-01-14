@@ -22,7 +22,7 @@ const ERROR_TOAST_DURATION = 5000;
 export const TranslateToaster = () => {
   const [selectEvent] = useTextSelection();
   const { translatedText } = useTranslateStore();
-  const { error: errorTranslate } = useTranslation({
+  const { error: errorTranslate, translateText } = useTranslation({
     nativeLangKey: GLOBAL_STRINGS.LOCAL_STORAGE_KEY.NATIVE_LENGUAGE,
     targetLangKey: GLOBAL_STRINGS.LOCAL_STORAGE_KEY.TARGET_LENGUAGE,
   });
@@ -59,7 +59,7 @@ export const TranslateToaster = () => {
         handleHotkey({
           eventTarget: selectEvent.target as HTMLInputElement,
           getEditableElements,
-          text: translatedText,
+          doTranslate: translateText,
         });
       },
     },

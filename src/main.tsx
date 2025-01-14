@@ -7,5 +7,10 @@ createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <PopUp />
     <TranslateToaster />
+    <input
+      type="text"
+      placeholder="acá"
+      value={"en muy muy lejano, habia un ogro"}
+    />
   </StrictMode>
 );
