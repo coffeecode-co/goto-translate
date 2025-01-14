@@ -19,12 +19,12 @@ export const EnableSwitch = () => {
   const [customStorage] = useLocalStorage();
 
   const getStorageValue = useCallback(async () => {
-    const data = (await customStorage({
+    const data = await customStorage({
       op: "get",
       key: STORAGE_KEY,
-    })) as GotoTranslateData;
+    });
 
-    return data?.gotoTranslateActive || data;
+    return data ?? "false";
   }, [customStorage]);
 
   const setStorageValue = useCallback(
