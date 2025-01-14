@@ -59,13 +59,17 @@ export const useTranslation = ({
           throw new Error("Translation API key is not configured");
         }
 
+        const textForTranslate =
+          (text || window.getSelection()?.toString().trim()) ?? "";
         const target = (await targetLang()) as string;
         const native = (await nativeLang()) as string;
         const translateService = new TranslateService({ api_key: apiKey });
-        const thisTextLang = await translateService.detectLang({ text });
+        const thisTextLang = await translateService.detectLang({
+          text: textForTranslate,
+        });
         const targetForThis = thisTextLang === native ? target : native;
         const translatedText = await translateService.translate({
-          text,
+          text: textForTranslate,
           target: targetForThis,
         });
 
