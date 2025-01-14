@@ -10,7 +10,7 @@ createRoot(document.getElementById("root")!).render(
     <input
       type="text"
       placeholder="acá"
-      value={"en muy muy lejano, habia un ogro"}
+      defaultValue="y la iguana tomaba cafe"
     />
   </StrictMode>
 );

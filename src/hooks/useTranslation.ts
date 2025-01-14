@@ -50,8 +50,9 @@ export const useTranslation = ({
       const isTranslationEnabled = envs.VITE_TRANSLATION_ENABLED;
       if (!isTranslationEnabled || !text) {
         const decodedText = decode(text);
-        setTranslatedText(decodedText ? `[ ${decodedText} ]` : "");
-        return;
+        const newText = decodedText ? `[ ${decodedText} ]` : "";
+        setTranslatedText(newText);
+        return newText;
       }
 
       const apiKey = envs.VITE_GOOGLE_CLOUD_TRANSLATE_KEY;
