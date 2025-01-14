@@ -17,6 +17,9 @@ export const PopUp = () => {
       <PopUpLenguagePicker
         labelText={GLOBAL_STRINGS.POPUP_PICKERS.NATIVE_LANGUAGE.LABEL}
         localStorageKey={GLOBAL_STRINGS.LOCAL_STORAGE_KEY.NATIVE_LENGUAGE}
+        defaultValue={
+          GLOBAL_STRINGS.POPUP_PICKERS.NATIVE_LANGUAGE.DEFAULT_VALUE
+        }
         selectPlaceholder={
           GLOBAL_STRINGS.POPUP_PICKERS.NATIVE_LANGUAGE.PLACEHOLDER
         }
@@ -25,6 +28,9 @@ export const PopUp = () => {
       <PopUpLenguagePicker
         labelText={GLOBAL_STRINGS.POPUP_PICKERS.TARGET_LANGUAGE.LABEL}
         localStorageKey={GLOBAL_STRINGS.LOCAL_STORAGE_KEY.TARGET_LENGUAGE}
+        defaultValue={
+          GLOBAL_STRINGS.POPUP_PICKERS.TARGET_LANGUAGE.DEFAULT_VALUE
+        }
         selectPlaceholder={
           GLOBAL_STRINGS.POPUP_PICKERS.TARGET_LANGUAGE.PLACEHOLDER
         }

@@ -8,10 +8,12 @@ export const GLOBAL_STRINGS = {
     NATIVE_LANGUAGE: {
       LABEL: "Native Language",
       PLACEHOLDER: "Select your native language",
+      DEFAULT_VALUE: "es",
     },
     TARGET_LANGUAGE: {
       LABEL: "Target Language",
       PLACEHOLDER: "Select your target language",
+      DEFAULT_VALUE: "en",
     },
   },
 };

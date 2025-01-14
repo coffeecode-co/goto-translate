@@ -7,12 +7,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useLocalStorage, UseLocalStorageProps } from "@/hooks";
-import { GotoTranslateData } from "..";
 
 interface Props {
   labelText: string;
   selectPlaceholder: string;
   localStorageKey: string;
+  defaultValue: string;
 }
 
 const languages = [
@@ -28,6 +28,7 @@ export const PopUpLenguagePicker = ({
   labelText,
   selectPlaceholder,
   localStorageKey,
+  defaultValue,
 }: Props) => {
   const [selectedLanguage, setSelectedLanguage] = useState("es");
   const [isInitialized, setIsInitialized] = useState(false);
@@ -39,11 +40,10 @@ export const PopUpLenguagePicker = ({
       key: localStorageKey,
     });
 
-    const dataReturn = data as GotoTranslateData;
-    const dataString = data as string;
+    const dataReturn = data ?? defaultValue;
 
-    return dataReturn[localStorageKey] || dataString;
-  }, [customStorage, localStorageKey]);
+    return dataReturn;
+  }, [customStorage, localStorageKey, defaultValue]);
 
   const setStorageValue = useCallback(
     async (value: string) => {
